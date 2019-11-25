@@ -1,6 +1,7 @@
 package main;
 
 import accounts.AccountService;
+import dbService.DBService;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -18,10 +19,10 @@ public class Main {
         //создаем сервлет для обработки  get запроса
         GetServlet getServlet = new GetServlet();
         //создаем аккаунт сервис для хранения аккаунтов пользователей и их сессий
-        AccountService accountService = new AccountService();
+        AccountService service = new AccountService();
         //создаем два сервлета для обработки запросов
-        SignInServlet signInServlet = new SignInServlet(accountService);
-        SignUpServlet signUpServlet = new SignUpServlet(accountService);
+        SignInServlet signInServlet = new SignInServlet(service);
+        SignUpServlet signUpServlet = new SignUpServlet(service);
         //создаем хандлер для перехвата запроса и передаем в него сервлет
         ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
         handler.addServlet(new ServletHolder(getServlet),"/mirror");

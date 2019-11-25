@@ -1,42 +1,43 @@
 package accounts;
 
+import dataSets.UserDataSet;
+import dbService.DBException;
+import dbService.DBService;
 import org.eclipse.jetty.server.session.JDBCSessionManager;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class AccountService {
-    private Map<String,UserProfile> loginToProfile;
-    private Map<String,UserProfile> sessionIdToProfile;
+    private final DBService service;
 
     public AccountService(){
-        loginToProfile = new HashMap<>();
-        sessionIdToProfile = new HashMap<>();
+        service = new DBService();
     }
 
-    public void addUser(UserProfile userProfile){
-        loginToProfile.put(userProfile.getUserName(),userProfile);
+    public void addUser(UserDataSet userProfile) throws DBException {
+        service.addUser(userProfile.getUserName(),userProfile.getPassword());
     }
 
-    public void addSession(String sessionId, UserProfile userProfile){
-        sessionIdToProfile.put(sessionId,userProfile);
+    //public void addSession(String sessionId, UserProfile userProfile){
+   //     sessionIdToProfile.put(sessionId,userProfile);
+   // }
+
+    //public UserProfile getUserBySession(String sessionId){
+    //    return sessionIdToProfile.get(sessionId);
+    //}
+
+    public UserDataSet getUserByLogin(String login) throws DBException {
+        return service.getUserByName(login);
     }
 
-    public UserProfile getUserBySession(String sessionId){
-        return sessionIdToProfile.get(sessionId);
-    }
+    //public void deleteUser(String login){
+   //     loginToProfile.remove(login);
+   // }
 
-    public UserProfile getUserByLogin(String login){
-        return loginToProfile.get(login);
-    }
-
-    public void deleteUser(String login){
-        loginToProfile.remove(login);
-    }
-
-    public void deleteSession(String sessionId){
-        sessionIdToProfile.remove(sessionId);
-    }
+    //public void deleteSession(String sessionId){
+       // sessionIdToProfile.remove(sessionId);
+   // }
 
 
 
