@@ -11,6 +11,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import servlets.GetServlet;
 import servlets.SignInServlet;
 import servlets.SignUpServlet;
+import servlets.WebSocketChatServlet;
 
 import java.util.logging.Logger;
 
@@ -25,9 +26,11 @@ public class Main {
         SignUpServlet signUpServlet = new SignUpServlet(service);
         //создаем хандлер для перехвата запроса и передаем в него сервлет
         ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        WebSocketChatServlet webSocketChatServlet = new WebSocketChatServlet();
         handler.addServlet(new ServletHolder(getServlet),"/mirror");
         handler.addServlet(new ServletHolder(signInServlet),"/signin");
         handler.addServlet(new ServletHolder(signUpServlet),"/signup");
+        handler.addServlet(new ServletHolder(webSocketChatServlet),"/chat");
         //создаем хандлер ресурсов для подгрузки html формы
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setResourceBase("public_html");

@@ -2,9 +2,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
-    <title>MyWebService V2.0</title>
+    <title>MyWebService V4.0</title>
+    <script type="text/javascript">
+        var ws;
+
+        function init() {
+            ws = new WebSocket("ws://localhost:8080/chat");
+            ws.onmessage = function (event) {
+                var $textarea = document.getElementById("messages");
+                $textarea.value = event.data + "\n";
+            }
+        };
+
+        function sendMessage() {
+            var messageField = document.getElementById("message");
+            //var userNameField = document.getElementById("username");
+            var message = messageField.value;
+            ws.send(message);
+            messageField.value = '';
+        }
+    </script>
 </head>
-<body>
+<body onload="init()";>
 <p>MyWebService V2.0</p>
 
 <form action="/signin" method="POST">
@@ -17,5 +36,14 @@
     Password: <input type="password" name="password"/>
     <input type="submit" value="Sign up">
 </form>
+<div id="body">
+    <div id="chatbox">
+        <textarea id="messages" rows="2" cols="50" readonly="readonly"></textarea>
+    </div>
+    <form name="message" action="">
+        <input name="usermsg" type="text" id="message" size="40"/>
+        <input type="button" name="submitmsg" value="Send..." onclick="sendMessage();"/>
+    </form>
+</div>
 </body>
 </html>
